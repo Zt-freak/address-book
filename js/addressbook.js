@@ -10,29 +10,50 @@ function asyncAJAX(url) {
     })
 }
 
-/*asyncAJAX('https://randomuser.me/api/?results10')
-.then(result => {
-    console.log('result: ', result);
-    var person = result;
-    obj = JSON.parse(person);
-    //document.getElementById("test").innerHTML += obj.results[0].name.first;
-}, error => {
-    console.error('error: ', error);
-})*/
-
-function writeList(item, index) {
-    document.getElementById("test").innerHTML += "index[" + index + "]: " + item + "<br>"; 
+function capitalizeFirstLetter(string) {
+    /* Check name for prefixes */
+    if (string.includes(" ")) {
+        return string.charAt(0).toLowerCase()
+        + string.slice(1, string.lastIndexOf(" ") + 1).toLowerCase()
+        + string.charAt(string.lastIndexOf(" ")  + 1).toUpperCase()
+        + string.slice(string.lastIndexOf(" ") + 2, string.length).toLowerCase()
+        ;
+    }
+    /* Check name for being a compound name */
+    else if (string.includes("-")) {
+        return string.charAt(0).toUpperCase()
+        + string.slice(1, string.lastIndexOf("-") + 1).toLowerCase()
+        + string.charAt(string.lastIndexOf("-")  + 1).toUpperCase()
+        + string.slice(string.lastIndexOf("-") + 2, string.length).toLowerCase()
+        ;
+    }
+    else {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    }
 }
 
 function generatePeople() {
-    asyncAJAX('https://randomuser.me/api/?results=10').then (
+    asyncAJAX('https://randomuser.me/api/?results=50').then (
         result => {
             console.log('result: ', result);
             var people = result;
             peopleList = JSON.parse(people);
 
+            /* Sort alphabetically */
+
+            peopleList.results.sort(function (a, b) {
+                return a.name.last.localeCompare(b.name.last);
+            })
+
+            /* Change names to start with uppercase characters */
             for (var key in peopleList.results){
-                //document.write(peopleList.results[key].gender);
+                peopleList.results[key].name.first = capitalizeFirstLetter(peopleList.results[key].name.first);
+                peopleList.results[key].name.last = capitalizeFirstLetter(peopleList.results[key].name.last);
+            }
+
+            /* Display the List of People */
+
+            for (var key in peopleList.results){
                 document.getElementById("test").innerHTML += peopleList.results[key].name.first + " " + peopleList.results[key].name.last + "<br />";
             }
         }, error => {
@@ -44,4 +65,3 @@ function generatePeople() {
 /*Code to be immediately executed*/
 
 generatePeople();
-//document.getElementById("test").innerHTML += generatePeople().data;
