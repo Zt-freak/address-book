@@ -1,4 +1,4 @@
-/*Here are my functions*/
+/*Functions*/
 
 function asyncAJAX(url) {
     return new Promise((resolve, reject) => {
@@ -49,10 +49,25 @@ function capitalizeFirstLetter(string, type) {
 }
 
 function displayName(list, key) {
-    document.getElementById("test").innerHTML +=
-    "<a class='personname'>"
+    document.getElementById("listDisplayer").innerHTML +=
+    "<a class='personname' onclick='displayInfo(" + key + ")'>"
         + list[key].name.first + " " + list[key].name.last
     + "</a><br />";
+}
+
+function displayInfo(key) {
+    document.getElementById("infoDisplayer").innerHTML =
+        "<p class='nameinfo'>" +
+            peopleList.results[key].name.first + " " + peopleList.results[key].name.last +
+        "</p>" +
+        "<img class='picture' src='" +
+            peopleList.results[key].picture.large +
+        "'>" +
+        "<div class='infobox'>" +
+            "<p class='infobox__info--attribute'>Street<p>" +
+            "<p class='infobox__info--value'>" + peopleList.results[key].location.street + "</p>" +
+        "</div>"
+    ;
 }
 
 function generatePeople() {
@@ -72,18 +87,38 @@ function generatePeople() {
             }
 
             /* Display the List of People */
+            let lastKey = 0;//This is the starting value for the variable that will keep track of when a name starts with a new letter.
             for (var key in peopleList.results){
+                //Display a new letter first if the last name starts with a new letter
+                if (key == 0) {
+                    document.getElementById("listDisplayer").innerHTML += "<h3 class='letterindicator'>"
+                    + peopleList.results[key].name.last.charAt(
+                        peopleList.results[key].name.last.lastIndexOf(" ") + 1)
+                    + "</h3>";
+                }
+                else if (peopleList.results[key].name.last.charAt(
+                    peopleList.results[key].name.last.lastIndexOf(" ") + 1)
+                != peopleList.results[lastKey].name.last.charAt(
+                    peopleList.results[lastKey].name.last.lastIndexOf(" ") + 1)
+                ) {
+                    document.getElementById("listDisplayer").innerHTML += "<h3 class='letterindicator'>"
+                    + peopleList.results[key].name.last.charAt(
+                        peopleList.results[key].name.last.lastIndexOf(" ") + 1)
+                    + "</h3>";
+                    lastKey = key;
+                }
+                //Display the name
                 displayName(peopleList.results, key);
             }
 
             return peopleList;
         }, error => {
             console.error('error: ', error);
-            document.getElementById("test").innerHTML = "<p>ERROR: Something went wrong while awaiting the AJAX response.</p>";
+            document.getElementById("listDisplayer").innerHTML = "<p>ERROR: Something went wrong while awaiting the AJAX response.</p>";
         }
     )
 }
 
 /*Code to be immediately executed*/
 
-generatePeople();
+let peopleList = generatePeople();
