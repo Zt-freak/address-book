@@ -48,6 +48,13 @@ function capitalizeFirstLetter(string, type) {
     }
 }
 
+function displayName(list, key) {
+    document.getElementById("test").innerHTML +=
+    "<a class='personname'>"
+        + list[key].name.first + " " + list[key].name.last
+    + "</a><br />";
+}
+
 function generatePeople() {
     asyncAJAX('https://randomuser.me/api/?results=50').then (
         result => {
@@ -56,7 +63,6 @@ function generatePeople() {
             peopleList = JSON.parse(people);
 
             /* Sort alphabetically */
-
             peopleList.results = sortNames(peopleList.results);
 
             /* Change names to start with uppercase characters */
@@ -66,14 +72,14 @@ function generatePeople() {
             }
 
             /* Display the List of People */
-
             for (var key in peopleList.results){
-                document.getElementById("test").innerHTML += peopleList.results[key].name.first + " " + peopleList.results[key].name.last + "<br />";
+                displayName(peopleList.results, key);
             }
 
             return peopleList;
         }, error => {
             console.error('error: ', error);
+            document.getElementById("test").innerHTML = "<p>ERROR: Something went wrong while awaiting the AJAX response.</p>";
         }
     )
 }
