@@ -59,43 +59,80 @@ html, body {
 
 .content {
     overflow-y: scroll;
-    
-    padding: 20px 20px;
+    height: 100vh;
+    width: auto;
+    margin: 0;
+    padding: 0;
 }
 
 .nameinfo {
     font-family: Tahoma, sans-serif;
-    color: rgb(0, 139, 139);
+    color: rgb(255, 255, 255);
     font-weight: bold;
     font-size: 20pt;
+    display: inline;
+}
+
+.flag {
+    height: 28px;
+    border-radius: 5px;
+    display: inline;
+    margin-left: 20px;
 }
 
 .picture {
     border-radius: 20px;
     width: 150px;
     height: 150px;
+    display: block;
+    margin-top: 20px;
 }
 
 .infobox {
-    width: 100%;
-    max-width: 500px;
+    width: auto;
+    max-width: 1000px;
+    padding: 20px 20px;
     
     display: grid;
-    grid-template-columns: 200px auto;
-    grid-auto-flow: column;
+    grid-template-columns: auto auto;
     
     
     &__info {
         &--attribute {
+            width: 200px;
             font-family: Tahoma, sans-serif;
             color: rgb(0, 139, 139);
             font-size: 16pt;
             font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 0;
         }
         &--value {
             font-family: Tahoma, sans-serif;
             color: rgb(0, 139, 139);
             font-size: 16pt;
+            margin-top: 5px;
+            margin-bottom: 0;
         }
+    }
+}
+
+.infoheader {
+    margin: 0;
+    background-color: rgb(0, 139, 139);
+    width: auto;
+    padding: 20px 20px;
+}
+
+.pagefooter {
+    padding: 20px;
+    position:fixed;
+    bottom:0;
+    display: flex;
+    justify-content: flex-start;
+    &__text, &__link {
+        font-family: Tahoma, sans-serif;
+        color: rgb(0, 139, 139);
+        font-size: 12pt;
     }
 }
